@@ -1,4 +1,4 @@
-export class ClientConfigModel
+export class CdfClientConfigModel
 {
 	CloudCMSMediaUrlRoot: string;
 	CloudCMSBranchId: string;

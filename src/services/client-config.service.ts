@@ -1,10 +1,10 @@
 import { 
-	ClientConfigModel
+	CdfClientConfigModel
 } 							from "../models/index";
 
 export class ClientConfigService 
 {
-	static ConfigModel: ClientConfigModel;
+	static ConfigModel: CdfClientConfigModel;
 
 	//BUILD MEDIA URL FOR CLOUD CMS NODE ID
 	static BuildCloudCmsMediaUrl(nodeId: string) : string

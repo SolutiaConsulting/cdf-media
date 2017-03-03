@@ -10,7 +10,7 @@ import
 	CdfVideoYouTubeComponent
 } 											from './components';
 
-import { ClientConfigModel }				from './models';
+import { CdfClientConfigModel }				from './models';
 import { ClientConfigService }				from './services';
 
 @NgModule({
@@ -47,9 +47,9 @@ import { ClientConfigService }				from './services';
 })
 export class CdfMediaModule 
 {
-	static forRoot(clientConfigModel: ClientConfigModel): ModuleWithProviders
+	static forRoot(model: CdfClientConfigModel): ModuleWithProviders
 	{
-		ClientConfigService.ConfigModel = clientConfigModel;
+		ClientConfigService.ConfigModel = model;
 
 		return {
 			ngModule: CdfMediaModule,
