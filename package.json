@@ -1,0 +1,72 @@
+{
+  "name": "@cdf/cdf-ng-media",
+  "version": "1.0.0",
+  "author": "Tom Schreck <tom_schreck@solutiaconsulting.com> (http://solutiaconsulting.com)",
+  "homepage": "https://github.com/SolutiaConsulting/cdf-ng-media#readme",  
+  "license": "MIT",
+  "description": "Angular module for displaying media assets (images, videos)",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --reporter nyan",
+    "cover": "node node_modules/istanbul/lib/cli.js cover node_modules/mocha/bin/_mocha -- -R spec test/*",
+    "lint": "tslint \"src/**/*.ts\"",
+    "pree2e": "webdriver-manager update",
+    "e2e": "protractor",
+    "tsc": "tsc",
+    "tsc:w": "tsc -w",
+    "prepublish": "tsc -p ./tsconfig.publish.json",
+    "clean:aot": "rimraf aot/*",
+    "clean:lib": "rimraf lib/*",
+    "clean:lib-temp": "rimraf lib-temp/*",
+    "clean": "npm run clean:aot && npm run clean:lib && npm run clean:lib-temp",
+    "copy:assets": "cpx \"src/assets/**/*\" lib/assets",
+    "copy:src": "cpx \"lib-temp/src/**/*\" lib",
+    "copy": "npm run copy:assets && npm run copy:src",
+    "ngc": "node_modules/.bin/ngc -p tsconfig-aot.json",
+    "b": "npm run clean && npm run ngc && npm run copy && npm run clean:lib-temp"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SolutiaConsulting/cdf-ng-media.git"
+  },
+  "bugs": {
+    "url": "https://github.com/SolutiaConsulting/cdf-ng-media/issues"
+  },
+  "typings": "./lib/index.d.ts",
+  "dependencies": {},
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "coveralls": "^2.11.16",
+    "istanbul": "^0.4.5",
+    "mocha": "^3.2.0",
+    "@angular/common": "^2.4.7",
+    "@angular/compiler": "^2.4.7",
+    "@angular/cli": "^1.0.0-beta.31",
+    "@angular/compiler-cli": "^2.4.7",
+    "@angular/core": "^2.4.7",
+    "@angular/forms": "^2.4.7",
+    "@angular/http": "^2.4.7",
+    "@angular/platform-browser": "^2.4.7",
+    "@angular/platform-browser-dynamic": "^2.4.7",
+    "@angular/platform-server": "^2.4.7",
+    "@angular/router": "^3.4.7",
+    "core-js": "^2.4.1",
+    "rxjs": "^5.1.0",
+    "zone.js": "^0.7.6",
+    "ts-helpers": "^1.1.1",
+    "codelyzer": "~2.0.0-beta.1",
+    "rimraf": "^2.5.4",
+    "ts-node": "^2.1.0",
+    "tslint": "^4.0.2",
+    "typescript": "^2.1.6",
+    "@types/jasmine": "^2.2.30",
+    "@types/node": "^6.0.46",
+    "cpx": "^1.5.0"
+  },  
+  "keywords": [
+    "Angular",
+    "Media",
+    "Images",
+    "Videos"
+  ]
+}

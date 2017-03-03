@@ -1,0 +1,21 @@
+# Node generated files
+node_modules
+aot
+coverage
+npm-debug.log
+
+
+# OS generated files
+Thumbs.db
+.DS_Store
+
+
+# Ignored files
+.vscode
+*.ts
+!*.d.ts
+.gitignore
+.npmignore
+license-banner.txt
+tsconfig.json
+tsconfig.publish.json
