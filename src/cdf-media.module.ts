@@ -1,15 +1,17 @@
-import { NgModule }							from '@angular/core';
+import { NgModule, ModuleWithProviders }	from '@angular/core';
 import { CommonModule }						from '@angular/common';
 
 import
 {
-	//COMPONENTS
 	CdfImageComponent,
 	CdfMediaComponent,
 	CdfMediaSliderComponent,
 	CdfVideoBackgroundComponent,
 	CdfVideoYouTubeComponent
-} 											from './components/index';
+} 											from './components';
+
+import { ClientConfigModel }				from './models';
+import { ClientConfigService }				from './services';
 
 @NgModule({
 	imports:
@@ -45,4 +47,15 @@ import
 })
 export class CdfMediaModule 
 {
+	static forRoot(clientConfigModel: ClientConfigModel): ModuleWithProviders
+	{
+		ClientConfigService.ConfigModel = clientConfigModel;
+
+		return {
+			ngModule: CdfMediaModule,
+			providers:
+			[ 
+			]
+		};
+	}	
 }
