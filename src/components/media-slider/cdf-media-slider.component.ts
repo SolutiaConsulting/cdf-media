@@ -21,7 +21,7 @@ import { Observable } 			from 'rxjs/Rx';
 import { CdfMediaComponent } 	from '../media/index';
 import { CdfMediaModel } 		from '../../models/index';
 import { SliderDirectionEnum } 	from './cdf-media-slider.enum';
-
+import { ClientConfigService }	from '../../services';
 @Component({
 	selector: 'cdf-media-slider',
 	template: `
@@ -273,9 +273,10 @@ export class CdfMediaSliderComponent implements OnInit, AfterViewInit
 	isMediaPlaying: boolean = false;
 
 	constructor(
-		private zone: NgZone)
+		private zone: NgZone,
+		private clientConfigService: ClientConfigService)
 	{
-	};
+	};	
 
 
 	ngOnInit()

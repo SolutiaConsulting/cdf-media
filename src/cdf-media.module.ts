@@ -1,4 +1,9 @@
-import { NgModule, ModuleWithProviders }	from '@angular/core';
+import
+{
+	ModuleWithProviders,
+	NgModule,
+	OpaqueToken 
+} 											from '@angular/core';
 import { CommonModule }						from '@angular/common';
 
 import
@@ -10,8 +15,17 @@ import
 	CdfVideoYouTubeComponent
 } 											from './components';
 
-import { CdfClientConfigModel }				from './models';
 import { ClientConfigService }				from './services';
+import { CdfMediaConfig }					from './config';
+
+
+export const CONFIG_DATA = new OpaqueToken('Config Data');
+export function configHelperFactory(config: CdfMediaConfig) 
+{
+	//console.log('------------------ MEDIA CONFIG DATA:', config);
+    ClientConfigService.ConfigModel = config;
+    return ClientConfigService;
+}
 
 @NgModule({
 	imports:
@@ -30,16 +44,16 @@ import { ClientConfigService }				from './services';
 	exports:
 	[
 		//COMPONENTS
-		CdfVideoBackgroundComponent,
 		CdfMediaComponent,
-		CdfMediaSliderComponent
+		CdfMediaSliderComponent,
+		CdfVideoBackgroundComponent
 	],
 	entryComponents:
 	[
 		//COMPONENTS
-		CdfVideoBackgroundComponent,
 		CdfMediaComponent,
-		CdfMediaSliderComponent
+		CdfMediaSliderComponent,
+		CdfVideoBackgroundComponent
 	],
 	providers:
 	[
@@ -47,15 +61,23 @@ import { ClientConfigService }				from './services';
 })
 export class CdfMediaModule 
 {
-	static forRoot(model: CdfClientConfigModel): ModuleWithProviders
-	{
-		ClientConfigService.ConfigModel = model;
-
-		return {
-			ngModule: CdfMediaModule,
-			providers:
-			[ 
-			]
-		};
-	}	
+    static forRoot(config: CdfMediaConfig): ModuleWithProviders
+    {   
+        return {
+            ngModule: CdfMediaModule,
+            providers:
+			[
+				ClientConfigService,
+				{
+					provide: CONFIG_DATA,
+					useValue: config
+				},
+				{
+					provide: ClientConfigService,
+					useFactory: configHelperFactory,
+					deps: [CONFIG_DATA]
+				}				
+            ]
+        };
+    }	
 }

@@ -19,6 +19,7 @@ import
 import { CdfMediaModel } 				from '../../models/index';
 import { CdfImageComponent } 			from '../image/index';
 import { CdfVideoYouTubeComponent } 	from '../video/index';
+import { ClientConfigService }			from '../../services';
 
 @Component({
 	selector: 'cdf-media',
@@ -136,9 +137,10 @@ export class CdfMediaComponent implements OnInit
 	showTitleOriginal: boolean = false;
 	classNames: string;
 
-	constructor()
+	constructor(
+		private clientConfigService: ClientConfigService)
 	{
-	}
+	};
 
 	ngOnInit()
 	{
