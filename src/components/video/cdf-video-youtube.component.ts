@@ -23,6 +23,7 @@ const jwPlayer = require('@cdf/cdf-ng-media/src/assets/lib/jwplayer-7.6.1/jwplay
 	:host 
 	{
 		height: 100%;
+		width: 100%;
 	}
 
 	:host /deep/ .jwplayer
