@@ -15,18 +15,6 @@ import
 	CdfVideoYouTubeComponent
 } 											from './components';
 
-import { ClientConfigService }				from './services';
-import { CdfMediaConfig }					from './config';
-
-
-export const CONFIG_DATA = new OpaqueToken('Config Data');
-export function configHelperFactory(config: CdfMediaConfig) 
-{
-	//console.log('------------------ MEDIA CONFIG DATA:', config);
-    ClientConfigService.ConfigModel = config;
-    return ClientConfigService;
-}
-
 @NgModule({
 	imports:
 	[
@@ -59,25 +47,4 @@ export function configHelperFactory(config: CdfMediaConfig)
 	[
 	]
 })
-export class CdfMediaModule 
-{
-    static forRoot(config: CdfMediaConfig): ModuleWithProviders
-    {   
-        return {
-            ngModule: CdfMediaModule,
-            providers:
-			[
-				ClientConfigService,
-				{
-					provide: CONFIG_DATA,
-					useValue: config
-				},
-				{
-					provide: ClientConfigService,
-					useFactory: configHelperFactory,
-					deps: [CONFIG_DATA]
-				}				
-            ]
-        };
-    }	
-}
+export class CdfMediaModule {}

@@ -3,5 +3,5 @@
  */
 export * from './components/index';
 export * from './models/index';
-export * from './config';
+export * from './services/index';
 export * from './cdf-media.module';

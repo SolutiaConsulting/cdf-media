@@ -9,7 +9,7 @@ import
 } 									from '@angular/core';
 
 import { CdfMediaModel }			from '../../models/index';
-import { ClientConfigService }		from '../../services';
+import { CdfMediaConfigService }	from '../../services';
 
 const jwPlayer = require('@cdf/cdf-ng-media/src/assets/lib/jwplayer-7.6.1/jwplayer.js');
 
@@ -58,13 +58,13 @@ export class CdfVideoYouTubeComponent implements OnInit, AfterViewInit
 	@Output() onVideoStopPlay: EventEmitter<any> = new EventEmitter<any>();
 
 	constructor(
-		private clientConfigService: ClientConfigService)
+		private configService: CdfMediaConfigService)
 	{
 	};
 
 	ngOnInit()
 	{
-		this.jwPlayerKey = ClientConfigService.GetJwPlayerKey();
+		this.jwPlayerKey = this.configService.GetJwPlayerKey();
 		
 		window["jwplayer"] = jwPlayer;
 		jwPlayer.key = this.jwPlayerKey;
