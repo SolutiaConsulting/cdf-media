@@ -9,7 +9,7 @@ import
 } 									from '@angular/core';
 
 import { CdfMediaModel }			from '../../models/index';
-import { CdfMediaConfigService }	from '../../services';
+import { ClientConfigService }		from '../../services';
 
 const jwPlayer = require('@cdf/cdf-ng-media/src/assets/lib/jwplayer-7.6.1/jwplayer.js');
 
@@ -49,15 +49,14 @@ export class CdfVideoBackgroundComponent implements OnInit, AfterViewInit
 
 	@Input() mediaModel: CdfMediaModel;
 
-	constructor(
-		private configService: CdfMediaConfigService)
+	constructor()
 	{
 	};
 
 	
 	ngOnInit()
 	{
-		this.jwPlayerKey = this.configService.GetJwPlayerKey();
+		this.jwPlayerKey = ClientConfigService.GetJwPlayerKey();
 		
 		window["jwplayer"] = jwPlayer;
 		jwPlayer.key = this.jwPlayerKey;

@@ -1,4 +1,4 @@
 /**
  * This barrel file provides the exports for shared resources
  */
-export * from './cdf-media-config.service';
+export * from './client-config.service';

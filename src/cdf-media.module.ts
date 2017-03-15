@@ -14,7 +14,17 @@ import
 	CdfVideoBackgroundComponent,
 	CdfVideoYouTubeComponent
 } 											from './components';
+import { ConfigInterface } 					from './models';
+import { ClientConfigService } 				from './services';
 
+
+export const CONFIG_DATA = new OpaqueToken('Config Data');
+export function configHelperFactory(config: ConfigInterface) 
+{
+	//console.log('------------------ MEDIA CONFIG DATA:', config);
+    ClientConfigService.ConfigModel = config;
+    return ClientConfigService;
+}
 @NgModule({
 	imports:
 	[
@@ -47,4 +57,25 @@ import
 	[
 	]
 })
-export class CdfMediaModule {}
+export class CdfMediaModule
+{
+	static forRoot(config: ConfigInterface): ModuleWithProviders
+	{		
+		return {
+			ngModule: CdfMediaModule,
+			providers:
+			[
+				ClientConfigService,
+				{
+					provide: CONFIG_DATA,
+					useValue: config
+				},
+				{
+					provide: ClientConfigService,
+					useFactory: configHelperFactory,
+					deps: [CONFIG_DATA]
+				}				
+			]
+		};
+	}
+}
