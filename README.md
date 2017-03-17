@@ -30,11 +30,10 @@ CDF-NG-MEDIA also utilizes the following 3rd party sources:
 
 * [JW Player][jwplayer-url] as the vehicle for loading videos.  CDF-NG-MEDIA is currently using:
   * JW Player version 7.6.1
-* [Cloud CMS][cloud-cms-url] is a content mnagement solution.  Right now configuration of CDF-NG-MEDIA requires 2 configuration entries to generate the proper URL needed by Cloud CMS for retrieving media assets.  I hope this will change soon.
 
 
 # Installation
-CDF-NG-MEDIA requires a JW Player key in order for JW Player to work correctly.  You will need to create an account and establis a JW Player key.  You will provide the JW Player Key during configuration.
+CDF-NG-MEDIA requires a JW Player key in order for JW Player to work correctly.  You will need to create an account and establis a JW Player key.  You will provide the JW Player Key during configuration.  See [JW Player][jwplayer-url].
 
 ## Installing CDF-NG-MEDIA in your Angular application:
 ```sh
@@ -44,14 +43,12 @@ CDF-NG-MEDIA requires a JW Player key in order for JW Player to work correctly. 
 
 ...................................................
 
-    //STEP 2: create a config file (cdf-media-config.ts) to override configuration settings:
+    //STEP 2: create a config file (cdf-media-config.ts) to provide configuration settings:
 
     import { ConfigInterface } from '@cdf/cdf-ng-media/lib';
 
     export const CdfMediaConfig: ConfigInterface =
       {
-        CloudCMSMediaUrlRoot: 'URL ROOT PATH FOR CLOUD CMS MEDIA ASSETS (example: https://XXXXXXXX-hosted.cloudcms.net/static/node)',
-        CloudCMSBranchId: 'BRANCH ID FOR CLOUD CMS',
         JwPlayerKey: 'YOUR JW PLAYER KEY'
       };
 
@@ -73,28 +70,36 @@ CDF-NG-MEDIA requires a JW Player key in order for JW Player to work correctly. 
       bootstrap: [ ... ]
     })
     export class AppModule { }
-
-...................................................
-  //STEP 4 **: inject ClientConfigService into AppComponent.
-
-  //app.component.ts
-  import { ClientConfigService } 		from '@cdf/cdf-ng-media/lib';
-
-  @Component(
-    {
-        selector: '...',
-        templateUrl: '...',
-        styleUrls: [ '....' ]
-    })
-  export class AppComponent implements OnInit
-  {
-      constructor(private clientConfigService : ClientConfigService) 
-      {}    
-  }
     
 ```
 
-** Because of Angulars AOT build process and because I cannot figure out another way to do this (please see this: [stack overflow question][stack-overflow-url]), you have to inject ClientConfigService into component in order for the config values to be applied to ClientConfigService.  Please see [stack overflow question][stack-overflow-url] if you know of a better way to do this. 
+
+# CDF-NG-MEDIA Models
+CDF-NG-MEDIA containes the following models needed to show media asset(s):
+* CdfMediaModule
+* CdfVideoModel
+
+
+# CDF-NG-MEDIA Components
+CDF-NG-MEDIA containes the following components you can use:
+* CdfMediaComponent
+* CdfMediaSliderComponent
+* CdfVideoBackgroundComponent
+
+
+## CdfMediaComponent 
+CdfMediaComponent is the base component used to display either an image or a video.  CdfMediaComponent consumes CdfMediaModel which contains all the data necessary to determine if the media asset is a video or an image.
+
+
+## CdfMediaSliderComponent 
+CdfMediaSliderComponent
+
+
+## CdfVideoBackgroundComponent 
+CdfVideoBackgroundComponent
+
+
+
 
 
 
@@ -127,5 +132,3 @@ Tom Schreck – [@tschreck](https://twitter.com/tschreck) – tom_schreck@soluti
 [license-url]: http://opensource.org/licenses/MIT
 [jwplayer-url]:https://www.jwplayer.com/
 [cdf-url]:http://cdf.cloud/
-[cloud-cms-url]:https://www.cloudcms.com/
-[stack-overflow-url]:http://stackoverflow.com/questions/42822233/how-to-pass-config-data-to-ngmodule-so-ngmodule-will-be-compiled-with-aot

@@ -57,7 +57,9 @@ export class CdfVideoYouTubeComponent implements OnInit, AfterViewInit
 	@Output() onVideoBeforePlay: EventEmitter<any> = new EventEmitter<any>();
 	@Output() onVideoStopPlay: EventEmitter<any> = new EventEmitter<any>();
 
-	constructor()
+	constructor(
+		private clientConfigService : ClientConfigService
+	)
 	{
 	};
 

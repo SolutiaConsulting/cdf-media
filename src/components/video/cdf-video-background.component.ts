@@ -49,7 +49,9 @@ export class CdfVideoBackgroundComponent implements OnInit, AfterViewInit
 
 	@Input() mediaModel: CdfMediaModel;
 
-	constructor()
+	constructor(
+		private clientConfigService : ClientConfigService
+	)
 	{
 	};
 
@@ -81,7 +83,7 @@ export class CdfVideoBackgroundComponent implements OnInit, AfterViewInit
 			{
 				playListSourceArray.push(
 					{
-						mediaid: item.VideoId,
+						mediaid: this.guid(),
 						file: item.VideoUri,
 						label: "HD",
 						type: "mp4"
@@ -101,8 +103,6 @@ export class CdfVideoBackgroundComponent implements OnInit, AfterViewInit
 					playlist:
 					[
 						{
-							// "title": "One Playlist Item With Multiple Qualities",
-							// "description": "Two Qualities - One Playlist Item",
 							mediaid: this.guid(),
 							sources: playListSourceArray
 						}
