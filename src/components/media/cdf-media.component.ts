@@ -149,7 +149,14 @@ export class CdfMediaComponent implements OnInit
 		this.classNames = (this.mediaModel.Type && this.mediaModel.Type.length > 0) ? 'type-' +  this.getCleanType() : 'type-not-supplied';
 	};
 
-	doOnVideoBeforePlay()
+	stop()
+	{		
+		this.videoComponent.stop();
+		//console.log('STOP DAS PLAYER...', this.mediaModel.Title);
+	};		
+
+	
+	private doOnVideoBeforePlay()
 	{ 
 		this.showTitle = false;
 
@@ -159,7 +166,7 @@ export class CdfMediaComponent implements OnInit
 		}			
 	};
 
-	doOnVideoStopPlay()
+	private doOnVideoStopPlay()
 	{ 
 		this.showTitle = this.showTitleOriginal;
 		
@@ -169,13 +176,7 @@ export class CdfMediaComponent implements OnInit
 		}			
 	};
 
-	stop()
-	{		
-		this.videoComponent.stop();
-		//console.log('STOP DAS PLAYER...', this.mediaModel.Title);
-	};		
-
-	onMediaClick()
+	private onMediaClick()
 	{
 		if(this.videoComponent)
 		{
@@ -192,7 +193,6 @@ export class CdfMediaComponent implements OnInit
 			this.doImageClick();
 		}
 	};
-
 
 	private doImageClick()
 	{ 

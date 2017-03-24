@@ -111,8 +111,10 @@ CdfVideoBackgroundComponent
 
 ## Release History
 
+* 1.1.3
+  * removed configuration requirement passing in image source URL
 * < 1.0.65
-    * Rounds and rounds of trial and error...
+  * Rounds and rounds of trial and error...
 
 # Meta
 

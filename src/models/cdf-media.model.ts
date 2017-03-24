@@ -8,7 +8,6 @@ export class CdfMediaModel extends CdfRootModel
 	VideoList: CdfVideoModel[] = [];
 	HasImage: boolean = false;
 	HasVideo: boolean = false;
-	ShowExpandedInfoPaneInSlider: boolean = true;
 
 	constructor(id?: string, type?: string, title?:string, description?: string, imageUrl?: string, youTubeId?:string, videoList?: CdfVideoModel[])
 	{
