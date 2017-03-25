@@ -117,6 +117,9 @@ CDF-NG-MEDIA containes the following components you can use:
 ## **CdfMediaSliderComponent**
 **CdfMediaSliderComponent** is a component handling a collection of CdfMediaModels (mix of images and/or videos).   CdfMediaSliderComponent arranges the media in a grid.  If one of the items is a video, then playing the video will cause an information pane to slide out showing media's title, type, description and a button to click.  You can toggle on/off title, type, and description.
 
+![][cdf-ng-media-slider-url]
+![][cdf-ng-media-slider-video-url]
+
 ```sh
 <cdf-media-slider [mediaModelList]="mediaModelList" 
     [showType]="showType"
@@ -164,3 +167,6 @@ Tom Schreck – [@tschreck](https://twitter.com/tschreck) – tom_schreck@soluti
 [license-url]: http://opensource.org/licenses/MIT
 [jwplayer-url]:https://www.jwplayer.com/
 [cdf-url]:http://cdf.cloud/
+
+[cdf-ng-media-slider-url]:http://admin.cdf.cloud/domain-images/cdf-media-slider-grid.png
+[cdf-ng-media-slider-video-url]:http://admin.cdf.cloud/domain-images/cdf-media-slider-grid-video.png
