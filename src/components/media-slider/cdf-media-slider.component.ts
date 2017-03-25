@@ -54,11 +54,10 @@ import { CdfMediaModel } from '../../models/index';
 					<!--CLOSE BUTTON-->
 					<a class="close-button" (click)="onStopVideoClick(mediaModel)">×</a>
 
-					<section class="info-pane-container">
-						<h2 class="info-pane-container__title">{{mediaModel.Title}}</h2>
-						<p *ngIf="showDescription">{{mediaModel.Description}}</p>
-						<button class="button radius small hollow info-pane-container__button" (click)="doImageClick(mediaModel)">Learn More</button>	
-					</section>	
+					<h2 class="cdf-info-pane-container__title">{{mediaModel.Title}}</h2>
+					<p class="cdf-info-pane-container__description" *ngIf="showDescription">{{mediaModel.Description}}</p>
+
+					<button class="button radius small hollow cdf-info-pane-container__button" (click)="doImageClick(mediaModel)">Learn More</button>	
 
 				</section>
 			</section>	
@@ -188,10 +187,14 @@ import { CdfMediaModel } from '../../models/index';
 			margin: 0 0 1rem 0;
 		}
 
-		.cdf-info-pane-container__date
+		.cdf-info-pane-container__description
 		{
 			font-size: 1rem;
 			margin: 0 0 1rem 0;
+		}
+
+		.cdf-info-pane-container__button
+		{
 		}
 	` ],
 	providers: [],
