@@ -33,7 +33,7 @@ CDF-NG-MEDIA also utilizes the following 3rd party sources:
 
 
 # Installation
-CDF-NG-MEDIA requires a JW Player key in order for JW Player to work correctly.  You will need to create an account and establis a JW Player key.  You will provide the JW Player Key during configuration.  See [JW Player][jwplayer-url].
+CDF-NG-MEDIA requires a JW Player key in order for JW Player to work correctly.  You will need to create an account and establish a JW Player key.  You will provide the JW Player Key during configuration.  See [JW Player][jwplayer-url] for creating an account.
 
 ## Installing CDF-NG-MEDIA in your Angular application:
 ```sh
@@ -76,8 +76,31 @@ CDF-NG-MEDIA requires a JW Player key in order for JW Player to work correctly. 
 
 # CDF-NG-MEDIA Models
 CDF-NG-MEDIA containes the following models needed to show media asset(s):
-* CdfMediaModule
+* CdfMediaModel
 * CdfVideoModel
+
+## **CdfMediaModel**
+CdfMediaModel is the model that contains data about the media asset (image and/or video).  CdfMediaModel contains the following data points:
+
+```sh
+	Id: string;
+	Type: string;
+	Title: string;
+	Description: string;
+	ImageUri: string;
+	YouTubeId: string;
+	VideoList: CdfVideoModel[] = [];
+	HasImage: boolean = false;
+	HasVideo: boolean = false;  
+```
+  * Type can be used to apply a label ontop of the media asset (perfect for a collection of media assets of different types)
+  * ImageUri is the complete http URL to an image
+  * YouTubeId is the unique value representing a YouTube video (ex. 8geR0yacozY)
+  * VideoList is an optional collection of URIs to different videos.  This is a placeholder for future functionality
+  
+## **CdfVideoModel**
+CdfVideoModel is a placeholder data model for future development.
+
 
 
 # CDF-NG-MEDIA Components
@@ -87,17 +110,24 @@ CDF-NG-MEDIA containes the following components you can use:
 * CdfVideoBackgroundComponent
 
 
-## CdfMediaComponent 
-CdfMediaComponent is the base component used to display either an image or a video.  CdfMediaComponent consumes CdfMediaModel which contains all the data necessary to determine if the media asset is a video or an image.
+## **CdfMediaComponent**
+**CdfMediaComponent** is the base component used to display either an image or a video.  CdfMediaComponent consumes CdfMediaModel which contains all the data necessary to determine if the media asset is a video or an image.
 
 
-## CdfMediaSliderComponent 
-CdfMediaSliderComponent
+## **CdfMediaSliderComponent**
+**CdfMediaSliderComponent** is a component handling a collection of CdfMediaModels (mix of images and/or videos).   CdfMediaSliderComponent arranges the media in a grid.  If one of the items is a video, then playing the video will cause an information pane to slide out showing media's title, type, description and a button to click.  You can toggle on/off title, type, and description.
+
+```sh
+<cdf-media-slider [mediaModelList]="mediaModelList" 
+    [showType]="showType"
+    [showTitle]="showTitle"
+    [showDescription]="showDescription"
+    (onImageClick)="doMediaClick($event)"></cdf-media-slider>
+```
 
 
 ## CdfVideoBackgroundComponent 
-CdfVideoBackgroundComponent
-
+**CdfVideoBackgroundComponent** uses JW Player's capability to run a video contained in CdfMediaModel in the background.
 
 
 
