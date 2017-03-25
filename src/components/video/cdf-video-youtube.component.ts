@@ -114,11 +114,6 @@ export class CdfVideoYouTubeComponent implements OnInit, AfterViewInit
 			this.videoJWPlayer.on('play', function (e) 
 			{
 				//console.log('videoJWPlayer play...');
-
-				if (that.onVideoBeforePlay)
-				{ 
-					that.onVideoBeforePlay.emit();
-				}					
 			});
 			
 			this.videoJWPlayer.on('pause', function (e) 

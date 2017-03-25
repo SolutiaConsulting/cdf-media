@@ -7,7 +7,8 @@ import
 	Input,
 	keyframes,
 	NgZone,
-	OnInit,
+	OnDestroy,
+	OnInit,	
 	Output,
 	QueryList,
 	Renderer,
@@ -17,16 +18,22 @@ import
 	transition,
 	ViewChild,
 	ViewChildren
-} 								from '@angular/core';
+} from '@angular/core';
 
-import { CdfMediaComponent } 	from '../media/index';
-import { CdfMediaModel } 		from '../../models/index';
+import { CdfMediaComponent } from '../media/index';
+import { CdfMediaModel } from '../../models/index';
 
 @Component({
 	selector: 'cdf-media-slider',
 	template: `
-	<ul #mediaComponentContainer class="media-slider-flex-container"  [@mediaContainerTrigger]="mediaContainerState">
-		<li class="media-slider-flex-item" (click)="onMediaComponentClick($event, mediaModel)" *ngFor="let mediaModel of mediaModelList; let i = index">
+	<ul #mediaComponentContainer class="media-slider-flex-container">
+
+		<li class="media-slider-flex-item" 
+			(click)="onMediaComponentClick($event, mediaModel)" 
+			[@mediaListItemTrigger]="mediaModel.mediaPaneState"
+			*ngFor="let mediaModel of mediaModelList; let i = index">
+			
+			
 			<!--MEDIA PANE-->
 			<section class="cdf-media-pane-container" [@mediaStateTrigger]="mediaModel.mediaPaneState">		
 				<!--MEDIA: IMAGE OR VIDEO-->
@@ -55,6 +62,7 @@ import { CdfMediaModel } 		from '../../models/index';
 
 				</section>
 			</section>	
+			
 		</li>
 	</ul>
 	`,
@@ -76,25 +84,16 @@ import { CdfMediaModel } 		from '../../models/index';
 		display: flex;		
 		flex-direction: row;
 		flex-wrap: wrap;
-		justify-content: flex-start;
+		justify-content: center;
 		min-height: 550px;
 		margin: auto;
-		max-width: 275px;
 	}
-
-
-	@media only screen and (min-width : 568px)
-	{
-		.media-slider-flex-container
-		{
-			max-width: 550px;
-		}		
-	}	
 
 	@media only screen and (min-width : 842px)
 	{
 		.media-slider-flex-container
 		{
+			justify-content: flex-start;
 			max-width: 825px;
 		}		
 	}	
@@ -102,10 +101,28 @@ import { CdfMediaModel } 		from '../../models/index';
 	.media-slider-flex-item
 	{
 		list-style: none;
-		min-width: 275px;
-		min-height: 275px;		
+		width: 100vw;
+		height: 30vh;		
 		position: relative;
 	}
+
+	@media only screen and (min-width : 568px)
+	{
+		.media-slider-flex-item
+		{
+			width: 48vw;
+			height: 30vh;	
+		}		
+	}	
+
+	@media only screen and (min-width : 842px)
+	{
+		.media-slider-flex-item
+		{
+			width: 275px;
+			height: 275px;
+		}		
+	}		
 
 	cdf-media
 	{
@@ -180,310 +197,365 @@ import { CdfMediaModel } 		from '../../models/index';
 	providers: [],
 	animations:
 	[
-		trigger('mediaContainerTrigger', 
+		trigger('mediaListItemTrigger',
 			[
 				//STATE WHEN VIDEO IS STOPPED AND BECOMES INACTIVE
 				state('inactive', style({ opacity: 1 })),
-				
+
 				//STATE WHEN VIDEO IS PLAYING
 				state('active', style({ overflow: 'visible' })),
-				
+
 				//STATE WHEN OTHER VIDEO IS PLAYING
 				state('dimmed', style({ opacity: 0.2, filter: 'blur(2px)' })),
-				
-				transition('* => dimmed, * => active, * => inactive',
+
+				transition('* => dimmed, * => active',
 					[
-						style({}),						
+						style({}),
 						animate('300ms ease-out')
-					])				
+					]),
+
+				transition('* => inactive',
+					[
+						style({}),
+						animate('700ms ease-out')
+					])
 			]
-		),	
-		trigger('mediaStateTrigger', 
+		),
+		trigger('mediaStateTrigger',
 			[
 				//STATE WHEN VIDEO IS STOPPED AND BECOMES INACTIVE
-				state( 'inactive', style({ zIndex: 100 }) ),
-				
+				state('inactive', style({})),
+
 				//STATE WHEN VIDEO IS PLAYING
-				state( 'active', style({ zIndex: 1000 }) )
+				state('active', style({ zIndex: 1000 })),
+
+				transition('* => inactive', [ animate('500ms 350ms ease-in') ])
 			]
 		),
 		trigger('infoPaneSlideTrigger',
 			[
-				state('expandToTop', 	style({ zIndex: 11, top: '-100%' })),
-				state('expandToRight', 	style({ zIndex: 11, left: '100%' })),
-				state('expandToBottom', style({ zIndex: 11, top: '100%' })),
-				state('expandToLeft', 	style({ zIndex: 11, left: '-100%' })),
-				
+				state('slideToTop', style({ zIndex: 11, top: '-100%' })),
+				state('slideToRight', style({ zIndex: 11, left: '100%' })),
+				state('slideToBottom', style({ zIndex: 11, top: '100%' })),
+				state('slideToLeft', style({ zIndex: 11, left: '-100%' })),
+
 				//EXPANDING TO TOP DIRECTION
-				transition('void => expandToTop',
+				transition('void => slideToTop',
 					[
 						animate('500ms 350ms ease-in', keyframes([
 							style({ top: '0', offset: 0 }),
 							style({ top: '-25%', offset: 0.25 }),
 							style({ top: '-50%', offset: 0.5 }),
 							style({ top: '-75%', offset: 0.75 }),
-							style({ top: '-100%',  offset: 1.0 })
-						]))						
-					]	
-				),	
-				transition('expandToTop => *',
+							style({ top: '-100%', offset: 1.0 })
+						]))
+					]
+				),
+				transition('slideToTop => *',
 					[
 						animate('500ms ease-out', keyframes([
 							style({ top: '-100%', offset: 0 }),
 							style({ top: '-75%', offset: 0.25 }),
 							style({ top: '-50%', offset: 0.5 }),
 							style({ top: '-25%', offset: 0.75 }),
-							style({ top: '0',  offset: 1.0 })
-						]))						
-					]	
+							style({ top: '0', offset: 1.0 })
+						]))
+					]
 				),
 
 
 				//EXPANDING TO RIGHT DIRECTION
-				transition('void => expandToRight',
+				transition('void => slideToRight',
 					[
 						animate('500ms 250ms ease-in', keyframes([
 							style({ left: '0', offset: 0 }),
 							style({ left: '25%', offset: 0.25 }),
 							style({ left: '50%', offset: 0.5 }),
 							style({ left: '75%', offset: 0.75 }),
-							style({ left: '100%',  offset: 1.0 })
-						]))						
-					]	
-				),	
-				transition('expandToRight => *',
+							style({ left: '100%', offset: 1.0 })
+						]))
+					]
+				),
+				transition('slideToRight => *',
 					[
 						animate('500ms ease-out', keyframes([
 							style({ left: '100%', offset: 0 }),
 							style({ left: '75%', offset: 0.25 }),
 							style({ left: '50%', offset: 0.5 }),
 							style({ left: '25%', offset: 0.75 }),
-							style({ left: '0',  offset: 1.0 })
-						]))						
-					]	
+							style({ left: '0', offset: 1.0 })
+						]))
+					]
 				),
 
 
 				//EXPANDING TO BOTTOM DIRECTION
-				transition('void => expandToBottom',
+				transition('void => slideToBottom',
 					[
 						animate('500ms 350ms ease-in', keyframes([
 							style({ top: '0', offset: 0 }),
 							style({ top: '25%', offset: 0.25 }),
 							style({ top: '50%', offset: 0.5 }),
 							style({ top: '75%', offset: 0.75 }),
-							style({ top: '100%',  offset: 1.0 })
-						]))						
-					]	
-				),	
-				transition('expandToBottom => *',
+							style({ top: '100%', offset: 1.0 })
+						]))
+					]
+				),
+				transition('slideToBottom => *',
 					[
 						animate('500ms ease-out', keyframes([
 							style({ top: '100%', offset: 0 }),
 							style({ top: '75%', offset: 0.25 }),
 							style({ top: '50%', offset: 0.5 }),
 							style({ top: '25%', offset: 0.75 }),
-							style({ top: '0',  offset: 1.0 })
-						]))						
-					]	
-				),				
+							style({ top: '0', offset: 1.0 })
+						]))
+					]
+				),
 
 				//EXPANDING TO LEFT DIRECTION
-				transition('void => expandToLeft',
+				transition('void => slideToLeft',
 					[
 						animate('500ms 350ms ease-in', keyframes([
 							style({ left: '0', offset: 0 }),
 							style({ left: '-25%', offset: 0.25 }),
 							style({ left: '-50%', offset: 0.5 }),
 							style({ left: '-75%', offset: 0.75 }),
-							style({ left: '-100%',  offset: 1.0 })
-						]))						
-					]	
-				),	
-				transition('expandToLeft => *',
+							style({ left: '-100%', offset: 1.0 })
+						]))
+					]
+				),
+				transition('slideToLeft => *',
 					[
 						animate('500ms ease-out', keyframes([
 							style({ left: '-100%', offset: 0 }),
 							style({ left: '-75%', offset: 0.25 }),
 							style({ left: '-50%', offset: 0.5 }),
 							style({ left: '-25%', offset: 0.75 }),
-							style({ left: '0',  offset: 1.0 })
-						]))						
-					]	
+							style({ left: '0', offset: 1.0 })
+						]))
+					]
 				)
 			]
 		)
 	]
 })
-export class CdfMediaSliderComponent implements OnInit, AfterViewInit
+export class CdfMediaSliderComponent implements OnInit, OnDestroy, AfterViewInit
 {
 	@Input() mediaModelList: CdfMediaModel[] = [];
 	@Input() showType: boolean = false;
 	@Input() showTitle: boolean = false;
 	@Input() showDescription: boolean = false;
 	@Output() onImageClick: EventEmitter<any> = new EventEmitter<any>();
-	
-	@ViewChild('mediaComponentContainer') ULElement;	
-	@ViewChildren(CdfMediaComponent) mediaComponentList: QueryList<CdfMediaComponent>;
-	
-	activeMediaModel: CdfMediaModel = undefined;
 
-	isMediaPlaying: boolean = false;
-	
-	mediaContainerState: string = 'inactive';
+	@ViewChild('mediaComponentContainer') ULElement;
+	@ViewChildren(CdfMediaComponent) mediaComponentList: QueryList<CdfMediaComponent>;
+
+	activeMediaModel: CdfMediaModel = undefined;
+	acceptableVariance: number = 0.25;
 
 	constructor(
 		private zone: NgZone,
 		private renderer: Renderer
 	)
 	{
-	};	
+	};
 
 	ngOnInit()
-	{		
-	};	
+	{
+	};
+
+	ngOnDestroy()
+	{
+		let mediaComponentArray = this.mediaComponentList.toArray();
+
+		//MAKE ALL MEDIA COMPONENTS INACTIVE SINCE NO MORE VIDEOS ARE PLAYING
+		mediaComponentArray
+			.map((mediaComponentToMakeInactive: CdfMediaComponent) =>
+			{
+				mediaComponentToMakeInactive.mediaModel[ 'mediaPaneState' ] = 'inactive';
+				mediaComponentToMakeInactive.mediaModel[ 'infoPaneExpandedState' ] = 'void';
+				mediaComponentToMakeInactive.mediaModel[ 'IsInfoPaneExpanded' ] = false;
+			});
+		
+
+		this.mediaModelList = [];
+		this.activeMediaModel = undefined;		
+	};
 
 	ngAfterViewInit()
-	{ 	
-	};	
+	{
+	};
 
+	//DETERMINE WHICH DIRECTION SLIDEOUT SHOULD HAPPEN
+	//BY COMPARING RECT OF LI CLICKED ON TO RECT OF UL
 	onMediaComponentClick(event, mediaModel)
 	{
-        if (mediaModel.HasVideo)
-        { 
-            //console.log('---- 1. FIND DIMENSIONS OF SELECTED MEDIA COMPONENT...');
+		if (this.activeMediaModel && this.activeMediaModel.Guid === mediaModel.Guid && mediaModel.HasVideo)
+		{
+			//console.log('---- 1. FIND DIMENSIONS OF SELECTED MEDIA COMPONENT...');
 
 			//GET 'OUTSIDE-BOX' RECT FOR UL CONTAINING MEDIA COMPONENTS
-            let outsideBoxRect = this.ULElement.nativeElement.getBoundingClientRect();
-			let insideBoxRect: { width: undefined, bottom: undefined, left: undefined};
-			
+			let outsideBoxRect = this.ULElement.nativeElement.getBoundingClientRect();
+			let insideBoxRect: { width: undefined, bottom: undefined, left: undefined, right: undefined };
+
 			//FOR CLICKED ITEM, LOOK FOR 'media-slider-flex-item' CLASSNAME AND GET 'INSIDE-BOX' RECT
 			event.path
 				.filter((pathItem) =>
-					{
-						return (pathItem.className === 'media-slider-flex-item');
-					})
+				{
+					return (pathItem.className === 'media-slider-flex-item');
+				})
 				.map((htmlElement) =>
-					{
-                		insideBoxRect = htmlElement.getBoundingClientRect();
-					});
-			            
-            // console.log('---------- OUTSIDE BOX:', outsideBoxRect);
-            // console.log('---------- INSIDE BOX:', insideBoxRect);
+				{
+					insideBoxRect = htmlElement.getBoundingClientRect();
+				});
+
+			// console.log('---------- OUTSIDE BOX:', outsideBoxRect);
+			// console.log('---------- INSIDE BOX:', insideBoxRect);
+
+			let varianceWidth = this.calculateVariance(Math.ceil(outsideBoxRect.width), Math.ceil(insideBoxRect.width));
+			let varianceFromOutsideBoxRight = this.calculateVariance(Math.ceil(outsideBoxRect.right), Math.ceil(insideBoxRect.right));
+
+
+			//console.log('--------- variance:', varianceFromOutsideBoxRight);
 
 			//DEFAULT SLIDER DIRECTION...
-            var sliderDirection = 'expandToLeft';  
+			let sliderDirection = 'slideToRight';
 
-            //IF SINGLE COLUMN (OUTSIDE & INSIDE WIDTHS ARE SAME)        
-            if (Math.ceil(outsideBoxRect.width) === Math.ceil(insideBoxRect.width))
-            {
-                //IF OUTSIDE & INSIDE BOTTOMS ARE SAME THEN SLIDE UP
-                if (Math.ceil(outsideBoxRect.bottom) === Math.ceil(insideBoxRect.bottom))
-                {
-                    sliderDirection = 'expandToTop';
-                }
-                else
-                {
-                    sliderDirection = 'expandToBottom';
-                }
-            }
-            //IF OUTSIDE & INSIDE LEFTS ARE SAME, THEN EXPAND TO RIGHT
-            else if (Math.ceil(outsideBoxRect.left) === Math.ceil(insideBoxRect.left))
-            { 
-                sliderDirection = 'expandToRight';
-            }    
+			//IF SINGLE COLUMN (OUTSIDE & INSIDE WIDTHS ARE WITHIN ACCEPTABLE VARIANCE)        
+			if (varianceWidth < this.acceptableVariance)
+			{
+				let varianceFromOutsideBoxBottom = this.calculateVariance(Math.ceil(outsideBoxRect.bottom), Math.ceil(insideBoxRect.bottom));
 
-            mediaModel[ 'infoPaneExpandedState' ] = sliderDirection;
-            mediaModel[ 'IsInfoPaneExpanded' ] = true;
+				//IF OUTSIDE & INSIDE BOTTOMS ARE WITHIN ACCEPTABLE VARIANCE, THEN SLIDE UP
+				if (varianceFromOutsideBoxBottom < this.acceptableVariance) 
+				{
+					sliderDirection = 'slideToTop';
+				}
+				else
+				{
+					sliderDirection = 'slideToBottom';
+				}
+			}
+			//IF THE VARIANCE BETWEEN OUTSIDE & INSIDE RIGHT EDGES ARE WITHIN ACCEPTABLE VARIANCE,, THEN SLIDE LEFT
+			else if (varianceFromOutsideBoxRight < this.acceptableVariance) 
+			{
+				sliderDirection = 'slideToLeft';
+			}
 
-            // console.log('--------- sliderDirection:', sliderDirection);        
-            // console.log('--------- mediaModel:', mediaModel);
-        } 
-	};
+			mediaModel[ 'infoPaneExpandedState' ] = sliderDirection;
+			mediaModel[ 'IsInfoPaneExpanded' ] = true;
 
-	onVideoBeforePlay(mediaModel: CdfMediaModel)
-	{ 
-		//console.log('---- 2. TURN OFF ALL OTHER MEDIA PLAYING...');
-
-		if (!this.isMediaPlaying)
-		{
-			mediaModel[ 'mediaPaneState' ] = 'active';
-
-			this.isMediaPlaying = true;
-			this.mediaContainerState = 'active';
-			this.activeMediaModel = mediaModel;
+			// console.log('--------- sliderDirection:', sliderDirection);        
+			// console.log('--------- mediaModel:', mediaModel);
 		}
-		//TURN OFF OTHER VIDEOS THAT MAY BE PLAYING...
 		else
 		{ 
-			let mediaComponentArray = this.mediaComponentList.toArray();
-
-			mediaComponentArray
-				.filter((item: CdfMediaComponent) =>			
-					{
-						return (item.mediaModel.HasVideo && item.mediaModel.Id !== mediaModel.Id);
-					})
-				.map((mediaComponentToStopPlaying: CdfMediaComponent) =>
-					{
-						mediaComponentToStopPlaying.stop();
-					});			
+			event.stopPropagation();
 		}
 	};
 
+
+	
+	//TURN OFF ALL OTHER VIDEOS EXCPET THE ONE ABOUT TO PLAY
+	private onVideoBeforePlay(mediaModel: CdfMediaModel)
+	{
+		let mediaComponentArray = this.mediaComponentList.toArray();
+
+		//IF THERE IS NO ACTIVE MEDIA, THEN DIM ALL OTHER MEDIA ITEMS	
+		if (!this.activeMediaModel)
+		{
+			//SET PASSED MEDIA MODEL AS ACTIVE
+			mediaModel[ 'mediaPaneState' ] = 'active';
+			this.activeMediaModel = mediaModel;
+
+			//MAKE ALL MEDIA COMPONENTS DIM SO NEW ACTIVE VIDEO STANDS OUT...
+			mediaComponentArray
+				.filter((item: CdfMediaComponent) =>			
+				{
+					return (item.mediaModel.Guid !== mediaModel.Guid);
+				})
+				.map((mediaComponentToStopPlaying: CdfMediaComponent) =>
+				{
+					//MAKE IT DIM
+					mediaComponentToStopPlaying.mediaModel[ 'mediaPaneState' ] = 'dimmed';
+				});
+		}
+
+		//OOOPS, A VIDEO IS PLAYING, SO STOP THE MEDIA BEING PASSED IN FROM PLAYING		
+		else if(mediaModel.Guid !== this.activeMediaModel.Guid)
+		{ 
+			mediaComponentArray
+				.filter((item: CdfMediaComponent) =>			
+				{
+					return (item.mediaModel.HasVideo && item.mediaModel.Guid === mediaModel.Guid);
+				})
+				.map((mediaComponentToStopPlaying: CdfMediaComponent) =>
+				{
+					//STOP PLAYNG VIDEO
+					mediaComponentToStopPlaying.stop();
+				});
+		}
+	};
 
 	//CLOSE SLIDE-OUT AFTER VIDEO FINISHES PLAYING ON ITS OWN, OR HAS STOPPED PLAYING...	
 	private onVideoAfterStopPlay(mediaModel: CdfMediaModel)
 	{
-		if(this.isMediaPlaying && this.activeMediaModel.Id === mediaModel.Id)
+		//IF MEDIA MODEL THAT JUST STOPPED IS SAME AS ACTIVE MEDIA MODEL, THEN RESET EVERYTHING
+		if (this.activeMediaModel && this.activeMediaModel.Guid === mediaModel.Guid)
 		{
-			this.animateClosingSlideOut(mediaModel);
+			let mediaComponentArray = this.mediaComponentList.toArray();
+
+			//MAKE ALL MEDIA COMPONENTS INACTIVE SINCE NO MORE VIDEOS ARE PLAYING
+			mediaComponentArray
+				.map((mediaComponentToMakeInactive: CdfMediaComponent) =>
+				{
+					//MAKE IT DIM
+					mediaComponentToMakeInactive.mediaModel[ 'mediaPaneState' ] = 'inactive';
+				});
+						
+			//PAUSE WHILE TRIGGER ANIMATION FIRES THEN EMIT MEDIA SLIDER CLOSED...
+			setTimeout(() => 
+			{
+				//THIS IS WHAT TRIGGERS INFO PANE TO SLIDE AWAY
+				mediaModel[ 'IsInfoPaneExpanded' ] = false;
+			}, 100);
+
+			this.activeMediaModel = undefined;
 		}
 	}
 
-
 	//MANUALLY STOPPING VIDEO BY CLOSING INFO PANE SLIDE-OUT	
-	private onStopVideoClick(mediaModel:CdfMediaModel)
-	{ 
+	private onStopVideoClick(mediaModel: CdfMediaModel)
+	{
 		let mediaComponentArray = this.mediaComponentList.toArray();
-		
+
 		mediaComponentArray
 			.filter((item: CdfMediaComponent) =>			
-				{
-					return (item.mediaModel.HasVideo && item.mediaModel.Id === mediaModel.Id);
-				})
+			{
+				return (item.mediaModel.HasVideo && item.mediaModel.Guid === mediaModel.Guid);
+			})
 			.map((mediaComponentToStopPlaying: CdfMediaComponent) =>
-				{
-					mediaComponentToStopPlaying.stop();
-				});
+			{
+				mediaComponentToStopPlaying.stop();
+			});
 	};
 
-	//ANIMATE CLOSING INFO SLIDE-OUT (INFO PANE)...
-	private animateClosingSlideOut(mediaModel:CdfMediaModel)
-	{ 
-		//CAUSE INFO PANE TO COLLAPSE			
-		mediaModel[ 'infoPaneExpandedState' ] = 'collapsed';			
-		
-		//PAUSE WHILE TRIGGER ANIMATION FIRES THEN EMIT MEDIA SLIDER CLOSED...
-		setTimeout(() => 
-		{
-			this.resetPanes(mediaModel);				
-		}, 400);		
-	}
-
-	private resetPanes(mediaModel:CdfMediaModel)
-	{ 
-		this.activeMediaModel = undefined;
-		this.isMediaPlaying = false;
-		this.mediaContainerState = 'inactive';
-		mediaModel[ 'mediaPaneState' ] = 'inactive';		
-		mediaModel[ 'IsInfoPaneExpanded' ] = false;
-	};	
-
-	private doImageClick(mediaModel:CdfMediaModel)
+	private doImageClick(mediaModel: CdfMediaModel)
 	{
 		if (this.onImageClick)
-		{ 
+		{
 			this.onImageClick.emit(mediaModel);
-		}								
+		}
 	};
+
+	private calculateVariance(outsideBoxNumber: number, insideBoxNumber): number
+	{
+		if (outsideBoxNumber === 0)
+		{
+			return 0;
+		}
+
+		return ((outsideBoxNumber - insideBoxNumber) / outsideBoxNumber);
+	}
 }
