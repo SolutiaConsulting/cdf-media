@@ -2,7 +2,7 @@
 [![version][npm-image]][npm-url]
 [![downloads][downloads-image]][downloads-url]
 
-> CDF-NG-MEDIA is an Angular module containing UI components for displaying different forms of media (images and/or video).  This module simplifies the displaying of media assets.  CDF-NG-MEDIA is a UI module existing in [Content Delivery Framework's][jwplayer-url] eco-system.
+> CDF-NG-MEDIA is an Angular module containing UI components for displaying different forms of media (images and/or video).  This module simplifies the displaying of media assets.  CDF-NG-MEDIA is a UI module existing in [Content Delivery Framework's][cdf-url] eco-system.
 
 > Happy Coding!
 
@@ -79,7 +79,7 @@ CDF-NG-MEDIA containes the following models needed to show media asset(s):
 * CdfMediaModel
 * CdfVideoModel
 
-## **CdfMediaModel**
+## *CdfMediaModel*
 CdfMediaModel is the model that contains data about the media asset (image and/or video).  CdfMediaModel contains the following data points:
 
 ```sh
@@ -98,7 +98,7 @@ CdfMediaModel is the model that contains data about the media asset (image and/o
   * YouTubeId is the unique value representing a YouTube video (ex. 8geR0yacozY)
   * VideoList is an optional collection of URIs to different videos.  This is a placeholder for future functionality
   
-## **CdfVideoModel**
+## *CdfVideoModel*
 CdfVideoModel is a placeholder data model for future development.
 
 
