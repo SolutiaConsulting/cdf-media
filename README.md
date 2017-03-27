@@ -144,6 +144,8 @@ CDF-NG-MEDIA containes the following components you can use:
 
 ## Release History
 
+* 1.2.0
+  * made cdf-media-slider self-contained
 * 1.1.3
   * removed configuration requirement passing in image source URL
 * < 1.0.65

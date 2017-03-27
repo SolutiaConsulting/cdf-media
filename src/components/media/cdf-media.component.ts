@@ -130,9 +130,10 @@ export class CdfMediaComponent implements OnInit
 	@ViewChild(CdfVideoYouTubeComponent) videoComponent: CdfVideoYouTubeComponent;
 	@ViewChild(CdfImageComponent) imageComponent: CdfImageComponent;
 
-	@HostBinding('class.media-is-video') IsMediaVideo: boolean = false;
-	@HostBinding('class.media-is-image') IsMediaImage: boolean = false;
+	@HostBinding('class.media-is-video') isMediaVideo: boolean = false;
+	@HostBinding('class.media-is-image') isMediaImage: boolean = false;
 
+	canClickOnMedia: boolean = true;
 	showTitleOriginal: boolean = false;
 	classNames: string;
 
@@ -144,8 +145,8 @@ export class CdfMediaComponent implements OnInit
 	{
 		this.showTitleOriginal = (this.showTitle) ? true : false;
 
-		this.IsMediaVideo = this.mediaModel.HasVideo;
-		this.IsMediaImage = (this.mediaModel.HasImage && !this.mediaModel.HasVideo);
+		this.isMediaVideo = this.mediaModel.HasVideo;
+		this.isMediaImage = (this.mediaModel.HasImage && !this.mediaModel.HasVideo);
 		this.classNames = (this.mediaModel.Type && this.mediaModel.Type.length > 0) ? 'type-' +  this.getCleanType() : 'type-not-supplied';
 	};
 
@@ -177,21 +178,24 @@ export class CdfMediaComponent implements OnInit
 	};
 
 	private onMediaClick()
-	{
-		if(this.videoComponent)
-		{
-			this.videoComponent.play();			
-		}
+	{		
+		if (this.canClickOnMedia)
+		{ 
+			if(this.videoComponent)
+			{
+				this.videoComponent.play();			
+			}
 
-		if(this.imageComponent)
-		{
-			this.doImageClick();
-		}
+			if(this.imageComponent)
+			{
+				this.doImageClick();
+			}
 
-		if(!this.imageComponent && !this.videoComponent)
-		{
-			this.doImageClick();
-		}
+			if(!this.imageComponent && !this.videoComponent)
+			{
+				this.doImageClick();
+			}
+		}	
 	};
 
 	private doImageClick()
@@ -200,7 +204,7 @@ export class CdfMediaComponent implements OnInit
 		{ 
 			this.onImageClick.emit(this.mediaModel);
 		}			
-	}	;
+	};
 
 	private getCleanType()
 	{

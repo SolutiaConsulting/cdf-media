@@ -355,7 +355,7 @@ export class CdfMediaSliderComponent implements OnInit, OnDestroy, AfterViewInit
 	@ViewChildren(CdfMediaComponent) mediaComponentList: QueryList<CdfMediaComponent>;
 
 	activeMediaModel: CdfMediaModel = undefined;
-	acceptableVariance: number = 0.25;
+	acceptableVariance: number = 0.20;
 
 	constructor(
 		private zone: NgZone,
@@ -472,60 +472,41 @@ export class CdfMediaSliderComponent implements OnInit, OnDestroy, AfterViewInit
 			mediaModel[ 'mediaPaneState' ] = 'active';
 			this.activeMediaModel = mediaModel;
 
-			//MAKE ALL MEDIA COMPONENTS DIM SO NEW ACTIVE VIDEO STANDS OUT...
+			//PREVENT ABILITY TO CLICK ON OTHER COMPONENTS WHILE VIDEO IS PLAYING, ALSO MAKE OTHER COMPONENTS DIM
 			mediaComponentArray
 				.filter((item: CdfMediaComponent) =>			
 				{
 					return (item.mediaModel.Guid !== mediaModel.Guid);
 				})
-				.map((mediaComponentToStopPlaying: CdfMediaComponent) =>
+				.map((mediaComponent: CdfMediaComponent) =>
 				{
-					//MAKE IT DIM
-					mediaComponentToStopPlaying.mediaModel[ 'mediaPaneState' ] = 'dimmed';
-				});
-		}
-
-		//OOOPS, A VIDEO IS PLAYING, SO STOP THE MEDIA BEING PASSED IN FROM PLAYING		
-		else if(mediaModel.Guid !== this.activeMediaModel.Guid)
-		{ 
-			mediaComponentArray
-				.filter((item: CdfMediaComponent) =>			
-				{
-					return (item.mediaModel.HasVideo && item.mediaModel.Guid === mediaModel.Guid);
-				})
-				.map((mediaComponentToStopPlaying: CdfMediaComponent) =>
-				{
-					//STOP PLAYNG VIDEO
-					mediaComponentToStopPlaying.stop();
+					mediaComponent.canClickOnMedia = false;
+					mediaComponent.mediaModel[ 'mediaPaneState' ] = 'dimmed';
 				});
 		}
 	};
 
-	//CLOSE SLIDE-OUT AFTER VIDEO FINISHES PLAYING ON ITS OWN, OR HAS STOPPED PLAYING...	
+	//CLOSE SLIDE-OUT AFTER VIDEO FINISHES PLAYING ON ITS OWN, OR HAS BEEN MANUALLY STOPPED...	
 	private onVideoAfterStopPlay(mediaModel: CdfMediaModel)
 	{
-		//IF MEDIA MODEL THAT JUST STOPPED IS SAME AS ACTIVE MEDIA MODEL, THEN RESET EVERYTHING
-		if (this.activeMediaModel && this.activeMediaModel.Guid === mediaModel.Guid)
-		{
-			let mediaComponentArray = this.mediaComponentList.toArray();
+		let mediaComponentArray = this.mediaComponentList.toArray();
 
-			//MAKE ALL MEDIA COMPONENTS INACTIVE SINCE NO MORE VIDEOS ARE PLAYING
-			mediaComponentArray
-				.map((mediaComponentToMakeInactive: CdfMediaComponent) =>
-				{
-					//MAKE IT DIM
-					mediaComponentToMakeInactive.mediaModel[ 'mediaPaneState' ] = 'inactive';
-				});
-						
-			//PAUSE WHILE TRIGGER ANIMATION FIRES THEN EMIT MEDIA SLIDER CLOSED...
-			setTimeout(() => 
+		//MARK ALL COMPONENTS AS CLICKABLE AND REMOVE DIM
+		mediaComponentArray
+			.map((mediaComponent: CdfMediaComponent) =>
 			{
-				//THIS IS WHAT TRIGGERS INFO PANE TO SLIDE AWAY
-				mediaModel[ 'IsInfoPaneExpanded' ] = false;
-			}, 100);
+				mediaComponent.canClickOnMedia = true;
+				mediaComponent.mediaModel[ 'mediaPaneState' ] = 'inactive';
+			});
+					
+		//PAUSE WHILE TRIGGER ANIMATION FIRES THEN EMIT MEDIA SLIDER CLOSED...
+		setTimeout(() => 
+		{
+			//THIS IS WHAT TRIGGERS INFO PANE TO SLIDE AWAY
+			mediaModel[ 'IsInfoPaneExpanded' ] = false;
+		}, 100);
 
-			this.activeMediaModel = undefined;
-		}
+		this.activeMediaModel = undefined;
 	}
 
 	//MANUALLY STOPPING VIDEO BY CLOSING INFO PANE SLIDE-OUT	
