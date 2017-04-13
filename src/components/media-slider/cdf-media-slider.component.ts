@@ -406,7 +406,7 @@ export class CdfMediaSliderComponent implements OnInit, OnDestroy, AfterViewInit
 			event.path
 				.filter((pathItem) =>
 				{
-					return (pathItem.className === 'media-slider-flex-item');
+					return (pathItem.className && pathItem.className.indexOf('media-slider-flex-item') !== -1);
 				})
 				.map((htmlElement) =>
 				{

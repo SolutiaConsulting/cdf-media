@@ -42,10 +42,10 @@ const jwPlayer = require('@cdf/cdf-ng-media/src/assets/lib/jwplayer-7.6.1/jwplay
 })
 export class CdfVideoBackgroundComponent implements OnInit, AfterViewInit
 {
-	private videoJWPlayer: any;
-	private jwPlayerKey: string;
-	private videoPlayerId: string;
-	private youTubeUrl: string = 'https://www.youtube.com/watch?v=';
+	videoJWPlayer: any;
+	jwPlayerKey: string;
+	videoPlayerId: string;
+	youTubeUrl: string = 'https://www.youtube.com/watch?v=';
 
 	@Input() mediaModel: CdfMediaModel;
 
@@ -135,7 +135,7 @@ export class CdfVideoBackgroundComponent implements OnInit, AfterViewInit
 	};
 
 	
-	private guid() 
+	guid() 
 	{
 		function s4() 
 		{

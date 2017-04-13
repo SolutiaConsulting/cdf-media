@@ -107,6 +107,7 @@ import { CdfVideoYouTubeComponent } 	from '../video/index';
 
 	.cdf-media-title
 	{
+		color: #fff;
 		line-height: 1;
 		position: relative;
 		width: 100%;
@@ -157,7 +158,7 @@ export class CdfMediaComponent implements OnInit
 	};		
 
 	
-	private doOnVideoBeforePlay()
+	doOnVideoBeforePlay()
 	{ 
 		this.showTitle = false;
 
@@ -167,7 +168,7 @@ export class CdfMediaComponent implements OnInit
 		}			
 	};
 
-	private doOnVideoStopPlay()
+	doOnVideoStopPlay()
 	{ 
 		this.showTitle = this.showTitleOriginal;
 		
@@ -177,7 +178,7 @@ export class CdfMediaComponent implements OnInit
 		}			
 	};
 
-	private onMediaClick()
+	onMediaClick()
 	{		
 		if (this.canClickOnMedia)
 		{ 
@@ -198,7 +199,7 @@ export class CdfMediaComponent implements OnInit
 		}	
 	};
 
-	private doImageClick()
+	doImageClick()
 	{ 
 		if (this.onImageClick)
 		{ 
@@ -206,7 +207,7 @@ export class CdfMediaComponent implements OnInit
 		}			
 	};
 
-	private getCleanType()
+	getCleanType()
 	{
 		return this.mediaModel.Type.replace(/ /g,'').toLowerCase();
 	};
